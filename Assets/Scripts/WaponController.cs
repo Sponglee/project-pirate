@@ -22,7 +22,11 @@ public class WaponController : MonoBehaviour
 
         if (Input.GetButton("Fire1"))
         {
-            weaponAnimator.SetTrigger("Attack");
+            weaponAnimator.SetBool("IsFire1", true);
+        }
+        else
+        {
+            weaponAnimator.SetBool("IsFire1", false);
         }
 
     }

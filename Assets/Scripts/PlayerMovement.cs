@@ -3,17 +3,19 @@ using UnityEngine.AI;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public NavMeshAgent agent;
 
-    public float horMove;
-    public float verticalMove;
-    private Camera _worldCam;
     public Transform movePivot;
     public Transform lookPivot;
     public Transform modelHolder;
     public Transform weaponController;
-
     public float recenterTreshold = 2f;
+
+
+
+    private NavMeshAgent agent;
+    private float horMove;
+    private float verticalMove;
+    private Camera _worldCam;
     private float timer = 0f;
     private bool lookEngaged = false;
 
