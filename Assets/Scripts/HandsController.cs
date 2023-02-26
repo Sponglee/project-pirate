@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class HandsController : MonoBehaviour
 {
-    public ProceduralHand leftHand;
-    public ProceduralHand rightHand;
+    public Transform leftHand;
+    public Transform rightHand;
 
     public Transform leftHandHandle;
     public Transform rightHandHandle;
 
+    public float lagAmount = 0.5f;
 
-
-    private void Update()
+    private void FixedUpdate()
     {
-        leftHand.SetTipPos(leftHandHandle.position);
-        rightHand.SetTipPos(rightHandHandle.position);
+        leftHand.position = Vector3.Lerp(leftHand.position, leftHandHandle.position, lagAmount);
+        rightHand.position = Vector3.Lerp(rightHand.position, rightHandHandle.position, lagAmount);
     }
 }

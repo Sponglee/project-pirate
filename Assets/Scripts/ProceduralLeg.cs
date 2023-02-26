@@ -25,7 +25,7 @@ public class ProceduralLeg : MonoBehaviour
 
             lineRenderer.SetPosition(i,
             Vector3.Lerp(Vector3.zero, transform.InverseTransformPoint(TipPos), lerp)
-            + Vector3.right * legShape.Evaluate(lerp));
+            + Vector3.back * legShape.Evaluate(lerp));
         }
 
         lineRenderer.SetPosition(lineRenderer.positionCount - 1, transform.InverseTransformPoint(TipPos));
