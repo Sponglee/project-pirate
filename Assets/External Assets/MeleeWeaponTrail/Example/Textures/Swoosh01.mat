@@ -33,7 +33,7 @@ Material:
     - _InvFade: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _TintColor: {r: 0.8490566, g: 0.8490566, b: 0.8490566, a: 0.5}
+    - _TintColor: {r: 0.42399433, g: 0.525003, b: 0.5660378, a: 0.5}
   m_BuildTextureStacks: []
 --- !u!1002 &2100001
 EditorExtensionImpl:
