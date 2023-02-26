@@ -9,7 +9,12 @@ public class PlayerMovement : MonoBehaviour
     public Transform modelHolder;
     public float recenterTreshold = 2f;
 
+    public bool IsMoving = false;
+    public bool IsFire1 = false;
+    public bool IsJumping = false;
 
+
+    public Animator modelAnimator;
 
     private NavMeshAgent agent;
     private float horMove;
@@ -32,6 +37,9 @@ public class PlayerMovement : MonoBehaviour
         var move = new Vector3(horMove, 0f, verticalMove);
         movePivot.position = transform.position + Vector3.Scale(_worldCam.transform.rotation * move * 5f, new Vector3(1, 0, 1)).normalized;
 
+        IsMoving = move.magnitude >= 0.02f;
+
+
         if (Input.GetButton("Fire1"))
         {
             RaycastHit hit;
@@ -41,8 +49,35 @@ public class PlayerMovement : MonoBehaviour
                 lookPivot.transform.position = transform.position + (hit.point - transform.position).normalized * 5f;
                 lookEngaged = true;
                 timer = 0f;
+                IsFire1 = true;
             }
         }
+        else if (Input.GetButtonUp("Fire1"))
+        {
+            IsFire1 = false;
+        }
+
+        if (Input.GetButtonDown("Jump"))
+        {
+            modelAnimator.SetBool("IsJump", true);
+            IsJumping = true;
+        }
+        else if (Input.GetButtonUp("Jump"))
+        {
+            modelAnimator.SetBool("IsJump", false);
+            IsJumping = false;
+        }
+
+        if (Input.GetButtonDown("Roll"))
+        {
+            modelAnimator.SetBool("IsRoll", true);
+        }
+        else if (Input.GetButtonUp("Roll"))
+        {
+            modelAnimator.SetBool("IsRoll", false);
+
+        }
+
     }
 
     private void FixedUpdate()
@@ -73,7 +108,7 @@ public class PlayerMovement : MonoBehaviour
                 timer = 0f;
 
                 if (MoveDir().magnitude >= 0.02f)
-                    lookPivot.position = movePivot.position;
+                    lookPivot.position = Vector3.Lerp(lookPivot.position, movePivot.position, 0.5f);
             }
         }
         else
