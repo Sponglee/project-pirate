@@ -7,7 +7,6 @@ public class PlayerMovement : MonoBehaviour
     public Transform movePivot;
     public Transform lookPivot;
     public Transform modelHolder;
-    public Transform weaponController;
     public float recenterTreshold = 2f;
 
 
@@ -51,7 +50,7 @@ public class PlayerMovement : MonoBehaviour
         if (MoveDir().magnitude <= 0.02f)
         {
             agent.ResetPath();
-            weaponController.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(LookDir(), Vector3.up), 0.5f);
+            modelHolder.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(LookDir(), Vector3.up), 0.5f);
         }
         else
         {
@@ -61,7 +60,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         if (LookDir().magnitude != 0)
-            weaponController.LookAt(lookPivot.position);
+            modelHolder.LookAt(lookPivot.position);
 
 
 

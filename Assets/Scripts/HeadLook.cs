@@ -15,7 +15,7 @@ public class HeadLook : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(_playerMovement.LookDir(), Vector3.up), 0.5f);
+        Quaternion tmpRotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(_playerMovement.LookDir(), Vector3.up), 0.5f);
 
     }
 }
