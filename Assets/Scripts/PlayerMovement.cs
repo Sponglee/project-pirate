@@ -7,21 +7,28 @@ public class PlayerMovement : MonoBehaviour
     public Transform movePivot;
     public Transform lookPivot;
     public Transform modelHolder;
+    public Animator modelAnimator;
     public float recenterTreshold = 2f;
 
     public bool IsMoving = false;
-    public bool IsFire1 = false;
     public bool IsJumping = false;
 
-
-    public Animator modelAnimator;
-
+    private Camera _worldCam;
     private NavMeshAgent agent;
     private float horMove;
     private float verticalMove;
-    private Camera _worldCam;
     private float timer = 0f;
     private bool lookEngaged = false;
+    public bool LookEngaged
+    {
+        get => lookEngaged; set
+        {
+            lookEngaged = value;
+
+            if (value)
+                timer = 0f;
+        }
+    }
 
     void Start()
     {
@@ -38,24 +45,6 @@ public class PlayerMovement : MonoBehaviour
         movePivot.position = transform.position + Vector3.Scale(_worldCam.transform.rotation * move * 5f, new Vector3(1, 0, 1)).normalized;
 
         IsMoving = move.magnitude >= 0.02f;
-
-
-        if (Input.GetButton("Fire1"))
-        {
-            RaycastHit hit;
-            Ray ray = _worldCam.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit, 100.0f, LayerMask.GetMask("Ground")))
-            {
-                lookPivot.transform.position = transform.position + (hit.point - transform.position).normalized * 5f;
-                lookEngaged = true;
-                timer = 0f;
-                IsFire1 = true;
-            }
-        }
-        else if (Input.GetButtonUp("Fire1"))
-        {
-            IsFire1 = false;
-        }
 
         if (Input.GetButtonDown("Jump"))
         {
@@ -99,12 +88,12 @@ public class PlayerMovement : MonoBehaviour
 
 
 
-        if (lookEngaged)
+        if (LookEngaged)
         {
             timer += Time.deltaTime;
             if (timer >= recenterTreshold)
             {
-                lookEngaged = false;
+                LookEngaged = false;
                 timer = 0f;
 
                 if (MoveDir().magnitude >= 0.02f)
