@@ -23,11 +23,17 @@ public class DamageItem : MonoBehaviour
         scaleTween?.Kill();
 
         numberText.text = damageAmount.ToString();
+        // float timer = 0f;
+        float duration = Random.Range(lifetimeSpread.x, lifetimeSpread.y);
 
         transform.localScale = Vector3.one * Random.Range(scaleSpread.x, scaleSpread.y);
-        scaleTween = transform.DOScale(Vector3.one, Random.Range(lifetimeSpread.x, lifetimeSpread.y)).SetEase(Ease.InCubic)
+        scaleTween = transform.DOScale(Vector3.one, duration).SetEase(Ease.InCubic)
         .OnUpdate(() =>
         {
+            // timer += Time.deltaTime;
+            // numberText.fontMaterial.SetFloat("_UnderlayOffsetX", Mathf.Lerp(1f, 0f, timer / duration));
+            // numberText.fontMaterial.SetFloat("_UnderlayOffsetY", Mathf.Lerp(-1f, 0f, timer / duration));
+
             transform.position = _worldCam.WorldToScreenPoint(_worldPos);
         })
         .OnComplete(() =>
