@@ -35,7 +35,7 @@ public class WeaponBase : MonoBehaviour
         if (tmpTarget != null)
         {
             var collisionPoint = other.ClosestPoint(transform.position);
-            tmpTarget.TakeDamage(10f, transform, collisionPoint);
+            tmpTarget.TakeDamage(Random.Range(12, 13), transform, collisionPoint);
         }
     }
 
