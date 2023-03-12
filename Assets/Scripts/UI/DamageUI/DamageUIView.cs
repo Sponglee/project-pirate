@@ -6,7 +6,14 @@ using UnityEngine.UI;
 
 public class DamageUIView : MonoBehaviour
 {
+    public Vector3 damageItemOffset;
+    public Vector2 damageItemOffsetSpread;
+    public Vector2 damageItemScaleSpread;
+    public Vector2 damageItemLifetimeSpread;
+    
     public GameObject damageItem;
+
+    public Transform itemContainer;
 
     private bool _isHasHandlers;
 

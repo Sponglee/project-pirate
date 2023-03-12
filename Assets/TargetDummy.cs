@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Anthill.Core;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.AI;
@@ -48,6 +49,8 @@ public class TargetDummy : MonoBehaviour, IAttackable
         if (!canTakeDamage) return;
 
         hp -= damageAmount;
+        AntEngine.Get<Menu>().Get<DamageUIController>().SpawnDamageNumber(damageAmount, transform.position);
+
         Flash();
         Destroy(Instantiate(hitFx, hitPoint, Quaternion.identity), 3f);
 

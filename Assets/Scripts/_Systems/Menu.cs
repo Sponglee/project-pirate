@@ -13,6 +13,8 @@ public class Menu : AntScenario
 
         Add<HealthBarController>();
         Add<LobbyController>();
+        Add<DamageUIController>();
+
         // .. добавляйте здесь любые системы в рамках меню
     }
 
@@ -20,6 +22,7 @@ public class Menu : AntScenario
     {
         Remove<HealthBarController>();
         Remove<LobbyController>();
+        Remove<DamageUIController>();
 
         base.RemovedFromEngine();
     }

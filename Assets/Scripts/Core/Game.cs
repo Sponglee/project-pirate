@@ -35,7 +35,7 @@ public class Game : AntAbstractBootstrapper
     {
         InitializeSystems();
         // Добавляем все сущности в игровой движок.
-        AntEngine.AddEntitiesFromHierarchy("world_root");
+        AntEngine.AddEntitiesFromHierarchy("Level");
 
         StateMachine.Initialize();
 

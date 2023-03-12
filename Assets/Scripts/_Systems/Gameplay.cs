@@ -14,7 +14,6 @@ public class Gameplay : AntScenario
         Add<AIInputSystem>();
         Add<KeyboardInputSystem>();
         Add<CharacterMovementSystem>();
-
         // .. добавляйте здесь любые системы в рамках геймплея
     }
 
