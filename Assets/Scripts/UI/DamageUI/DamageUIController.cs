@@ -52,11 +52,13 @@ public class DamageUIController : ISystem
 
     public void SpawnDamageNumber(float damageAmount, Vector3 worldPos)
     {
-        DamageItem tmpDamageUI = GameObject.Instantiate(_view.damageItem, _worldCam.WorldToScreenPoint(worldPos + _view.damageItemOffset)
-                        + new Vector3(0f/*Random.Range(_view.damageItemOffsetSpread.x, _view.damageItemOffsetSpread.y)*/, Random.Range(_view.damageItemOffsetSpread.x, _view.damageItemOffsetSpread.y), 0f),
-                                                            Quaternion.identity, _view.itemContainer).GetComponent<DamageItem>();
+        Vector3 calculatedWorldPos = worldPos + _view.damageItemOffset;
 
-        tmpDamageUI.Initialize(_view.damageItemScaleSpread, _view.damageItemLifetimeSpread);
+        DamageItem tmpDamageUI = GameObject.Instantiate(_view.damageItem, _worldCam.WorldToScreenPoint(calculatedWorldPos)
+                        + new Vector3(0f, Random.Range(_view.damageItemOffsetSpread.x, _view.damageItemOffsetSpread.y), 0f),
+                                                            Quaternion.identity, _view.itemContainer).GetComponent<DamageItem>();
+        tmpDamageUI.SaveStartWorldPos(calculatedWorldPos, _worldCam);
+        tmpDamageUI.Initialize(damageAmount, _view.damageItemScaleSpread, _view.damageItemLifetimeSpread);
     }
 
 

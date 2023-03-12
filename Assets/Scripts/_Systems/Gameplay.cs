@@ -11,7 +11,8 @@ public class Gameplay : AntScenario
     {
         base.AddedToEngine();
         Add<HealthSystem>();
-        Add<AIInputSystem>();
+        // Add<AIInputSystem>();
+        Add<EnemyMovementSystem>();
         Add<KeyboardInputSystem>();
         Add<CharacterMovementSystem>();
         // .. добавляйте здесь любые системы в рамках геймплея
@@ -20,7 +21,8 @@ public class Gameplay : AntScenario
     public override void RemovedFromEngine()
     {
         Remove<HealthSystem>();
-        Remove<AIInputSystem>();
+        // Remove<AIInputSystem>();
+        Remove<EnemyMovementSystem>();
         Remove<KeyboardInputSystem>();
         Remove<CharacterMovementSystem>();
         base.RemovedFromEngine();

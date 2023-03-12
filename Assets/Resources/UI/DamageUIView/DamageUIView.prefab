@@ -87,7 +87,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageItemOffset: {x: 0, y: 3, z: 0}
-  damageItemOffsetSpread: {x: -50, y: 50}
+  damageItemOffsetSpread: {x: -10, y: 20}
   damageItemScaleSpread: {x: 1.2, y: 1.5}
   damageItemLifetimeSpread: {x: 0.25, y: 0.5}
   damageItem: {fileID: 1607591628276759053, guid: c267c095691078547816c0cfafc412f1, type: 3}

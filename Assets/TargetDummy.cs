@@ -29,21 +29,28 @@ public class TargetDummy : MonoBehaviour, IAttackable
 
     public GameObject hitFx;
 
+    private AntEntity _entity;
+
     void Start()
     {
         playerRef = FindObjectOfType<PlayerController>();
 
         dummyMat = dummyRenderer.material;
         startColor = dummyMat.color;
+        _entity = GetComponent<AntEntity>();
+
+        AntEngine.AddEntity(_entity);
     }
 
-    private void FixedUpdate()
+    public void ExecuteMovement()
     {
         if (!canTakeDamage) return;
 
         agent.SetDestination(playerRef.transform.position);
 
     }
+
+
     public void TakeDamage(float damageAmount, Transform interactorRef, Vector3 hitPoint)
     {
         if (!canTakeDamage) return;

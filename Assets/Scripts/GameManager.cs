@@ -19,6 +19,9 @@ public class GameManager : MonoBehaviour
     public class MenuOpenEvent : UnityEvent<bool> { };
     public static MenuOpenEvent OnMenuOpen = new MenuOpenEvent();
 
+
+    public bool IsPaused = true;
+
     #endregion
 
     #region private
@@ -52,6 +55,23 @@ public class GameManager : MonoBehaviour
         AntEngine.Get<Menu>().Get<LobbyController>().Show();
     }
 
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (IsPaused)
+            {
+                StartGame();
+                IsPaused = false;
+            }
+            else
+            {
+                PauseGame();
+                IsPaused = true;
+            }
+        }
+    }
     #endregion
 
 
@@ -60,6 +80,13 @@ public class GameManager : MonoBehaviour
         AntEngine.Get<Menu>().Get<LobbyController>().Hide();
         AntEngine.Get<Menu>().Get<HealthBarController>().Show();
         Game.StateMachine.ChangeState(StateEnum.PlayState);
+    }
+
+    public void PauseGame()
+    {
+        AntEngine.Get<Menu>().Get<LobbyController>().Show();
+        AntEngine.Get<Menu>().Get<HealthBarController>().Hide();
+        Game.StateMachine.ChangeState(StateEnum.StartState);
     }
 
     public void LevelComplete()
