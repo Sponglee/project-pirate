@@ -8,6 +8,7 @@ using UnityEngine.AI;
 public class TargetDummy : MonoBehaviour, IAttackable
 {
 
+    public bool IsEngaged = false;
     public Health Health;
     public NavMeshAgent agent;
 
@@ -43,6 +44,8 @@ public class TargetDummy : MonoBehaviour, IAttackable
     {
         if (!Health.CanTakeDamage) return;
 
+        if (!IsEngaged) return;
+
         agent.SetDestination(playerRef.transform.position);
 
     }
@@ -75,6 +78,11 @@ public class TargetDummy : MonoBehaviour, IAttackable
         });
     }
 
+    public void Engage()
+    {
+        IsEngaged = true;
+    }
+
     private void Flash()
     {
         dummyMat.color = flashColor;
@@ -84,6 +92,7 @@ public class TargetDummy : MonoBehaviour, IAttackable
 
     private void DeathHandler()
     {
+        IsEngaged = false;
         Destroy(gameObject);
     }
 }
