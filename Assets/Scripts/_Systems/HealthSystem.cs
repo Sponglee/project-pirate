@@ -23,13 +23,12 @@ public class HealthSystem : ISystem, IExecuteSystem
         for (int i = _healthNodes.Count - 1; i >= 0; i--)
         {
             node = _healthNodes[i];
-            if (!node.Health.canTakeDamage) continue;
+            if (!node.Health.CanTakeDamage) continue;
 
-            if (node.Health.cashedDamage > 0 && node.Health.canTakeDamage)
+            if (node.Health.cashedDamage > 0 && node.Health.CanTakeDamage)
             {
                 float tmpDamage = node.Health.cashedDamage;
                 node.Health.cashedDamage = 0f;
-                node.Health.canTakeDamage = false;
                 node.Health.health -= tmpDamage;
             }
 
@@ -38,6 +37,7 @@ public class HealthSystem : ISystem, IExecuteSystem
                 AntEngine.RemoveEntity(node.Entity);
                 GameObject.Destroy(node.Entity.gameObject);
             }
+
         }
     }
 

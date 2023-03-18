@@ -8,8 +8,7 @@ using UnityEngine.AI;
 public class TargetDummy : MonoBehaviour, IAttackable
 {
 
-    public float hp = 100f;
-
+    public Health Health;
     public NavMeshAgent agent;
 
     public Renderer dummyRenderer;
@@ -18,8 +17,6 @@ public class TargetDummy : MonoBehaviour, IAttackable
     private Material dummyMat;
     private Color startColor;
     private Tween flashTween;
-
-    private bool canTakeDamage = true;
 
     public float knockBackAmount = 2f;
     public float knockBackTime = 0.2f;
@@ -44,7 +41,7 @@ public class TargetDummy : MonoBehaviour, IAttackable
 
     public void ExecuteMovement()
     {
-        if (!canTakeDamage) return;
+        if (!Health.CanTakeDamage) return;
 
         agent.SetDestination(playerRef.transform.position);
 
@@ -53,15 +50,15 @@ public class TargetDummy : MonoBehaviour, IAttackable
 
     public void TakeDamage(float damageAmount, Transform interactorRef, Vector3 hitPoint)
     {
-        if (!canTakeDamage) return;
+        if (!Health.CanTakeDamage) return;
 
-        hp -= damageAmount;
+        Health.cashedDamage += damageAmount;
         AntEngine.Get<Menu>().Get<DamageUIController>().SpawnDamageNumber(damageAmount, transform.position);
 
         Flash();
         Destroy(Instantiate(hitFx, hitPoint, Quaternion.identity), 3f);
 
-        canTakeDamage = false;
+        Health.CanTakeDamage = false;
         agent.enabled = false;
 
         transform.DOMove(transform.position + Vector3.Scale(new Vector3(1, 0, 1), (transform.position - playerRef.transform.position).normalized * knockBackAmount), knockBackTime)
@@ -69,7 +66,12 @@ public class TargetDummy : MonoBehaviour, IAttackable
         .OnComplete(() =>
         {
             agent.enabled = true;
-            canTakeDamage = true;
+            Health.CanTakeDamage = true;
+
+            if (Health.IsDead())
+            {
+                DeathHandler();
+            }
         });
     }
 
@@ -78,5 +80,10 @@ public class TargetDummy : MonoBehaviour, IAttackable
         dummyMat.color = flashColor;
         flashTween?.Kill();
         flashTween = dummyMat.DOColor(startColor, 0.5f).SetEase(Ease.OutSine);
+    }
+
+    private void DeathHandler()
+    {
+        Destroy(gameObject);
     }
 }

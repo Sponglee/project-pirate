@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Anthill.Core;
+using Anthill.Inject;
 using UnityEngine;
 
 public class AttackController : MonoBehaviour
@@ -10,9 +12,11 @@ public class AttackController : MonoBehaviour
     private Camera _worldCam;
     private PlayerMovement playerMovement;
     private WeaponStateController weaponStateController;
+    [Inject] public Game Game { get; set; }
     public bool IsFire1 = false;
     private void Start()
     {
+        AntInject.InjectMono(this);
         _worldCam = Camera.main;
         playerMovement = GetComponent<PlayerMovement>();
         weaponStateController = GetComponent<WeaponStateController>();
@@ -20,6 +24,8 @@ public class AttackController : MonoBehaviour
 
     private void Update()
     {
+        if (Game.StateMachine.CheckState() != StateEnum.PlayState) return;
+
         if (weaponStateController.weaponMode != WeaponStateController.WeaponMode.Armed) return;
 
 

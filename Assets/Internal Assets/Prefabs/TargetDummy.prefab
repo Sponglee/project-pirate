@@ -10,10 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 6998354093903999544}
   - component: {fileID: 6998354093737516060}
-  - component: {fileID: 6998354093903999545}
   - component: {fileID: 6998354093903999526}
   - component: {fileID: 6998354093903999527}
   - component: {fileID: 439119410}
+  - component: {fileID: 6998354093903999545}
+  - component: {fileID: 7876706711265596075}
   m_Layer: 0
   m_Name: TargetDummy
   m_TagString: Untagged
@@ -49,27 +50,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7efcfc6e3d20547c88ecdaa8934f16db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6998354093903999545
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6998354093903999547}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70749ea1c863a2144a06dc4cf183be85, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hp: 100
-  agent: {fileID: 439119410}
-  dummyRenderer: {fileID: 6998354094330701558}
-  flashColor: {r: 1, g: 0, b: 0, a: 1}
-  knockBackAmount: 3
-  knockBackTime: 0.2
-  playerRef: {fileID: 0}
-  movementSpeed: 10
-  hitFx: {fileID: 5880797563127281583, guid: 265d3a5ba69981a4698ceabcedf368b0, type: 3}
 --- !u!136 &6998354093903999526
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -122,6 +102,43 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &6998354093903999545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6998354093903999547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70749ea1c863a2144a06dc4cf183be85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Health: {fileID: 7876706711265596075}
+  agent: {fileID: 439119410}
+  dummyRenderer: {fileID: 6998354094330701558}
+  flashColor: {r: 1, g: 0, b: 0, a: 1}
+  knockBackAmount: 3
+  knockBackTime: 0.2
+  playerRef: {fileID: 0}
+  movementSpeed: 10
+  hitFx: {fileID: 5880797563127281583, guid: 265d3a5ba69981a4698ceabcedf368b0, type: 3}
+--- !u!114 &7876706711265596075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6998354093903999547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c78f6062f9e3e4b728c0e499a249e3b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canTakeDamage: 1
+  cashedDamage: 0
+  health: 100
+  CanDie: 1
 --- !u!1 &6998354094330701515
 GameObject:
   m_ObjectHideFlags: 0

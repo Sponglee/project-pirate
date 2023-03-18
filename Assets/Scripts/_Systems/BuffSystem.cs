@@ -24,7 +24,7 @@ public class BuffSystem : ISystem, IExecuteSystem, IExecuteFixedSystem
             node = _buffNodes[i];
             if (node.Buff.isInvincible)
             {
-                node.Health.canTakeDamage = false;
+                node.Health.CanTakeDamage = false;
             }
         }
     }
@@ -43,7 +43,7 @@ public class BuffSystem : ISystem, IExecuteSystem, IExecuteFixedSystem
             node.Buff.buffTimer += Time.fixedDeltaTime;
             if (node.Buff.buffTimer >= node.Buff.buffDuration)
             {
-                node.Health.canTakeDamage = true;
+                node.Health.CanTakeDamage = true;
             }
         }
     }
@@ -54,7 +54,7 @@ public class BuffSystem : ISystem, IExecuteSystem, IExecuteFixedSystem
         A.Log("CHECKED" + aNode.Buff.isInvincible);
         if (aNode.Buff.isInvincible)
         {
-            aNode.Health.canTakeDamage = true;
+            aNode.Health.CanTakeDamage = true;
         }
     }
 
@@ -64,7 +64,7 @@ public class BuffSystem : ISystem, IExecuteSystem, IExecuteFixedSystem
         A.Log("REMOVED" + aNode.Buff.isInvincible);
         if (aNode.Buff.isInvincible)
         {
-            aNode.Health.canTakeDamage = false;
+            aNode.Health.CanTakeDamage = false;
         }
     }
 
