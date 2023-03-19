@@ -23,7 +23,7 @@ public class TransformFollower : MonoBehaviour
         else
         {
             transform.position = Vector3.Lerp(transform.position, tragetRef.position, lagAmount);
-            transform.rotation = Quaternion.Lerp(transform.rotation, tragetRef.rotation, lagAmount);
+            // transform.rotation = Quaternion.Lerp(transform.rotation, tragetRef.rotation, lagAmount);
         }
     }
 }
