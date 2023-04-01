@@ -4,20 +4,22 @@ using UnityEngine;
 
 public class WeaponStateController : MonoBehaviour
 {
+    public PlayerController playerController;
+
     public Transform sheathePoint;
-    public Transform armedPoint;
-    public Transform deflectPoint;
     public WeaponBase weaponRef;
     public WeaponMode weaponMode;
 
     private void Start()
     {
-
-        weaponRef.transform.SetParent(GetModePoint());
-        weaponRef.transform.localPosition = Vector3.zero;
-        weaponRef.transform.localEulerAngles = Vector2.zero;
+        ChangeWeaponMode(WeaponMode.Sheathe);
     }
 
+
+    public void ToggleWeaponMode()
+    {
+        ChangeWeaponMode(weaponMode == WeaponMode.Sheathe ? WeaponMode.Armed : WeaponMode.Sheathe);
+    }
     public Transform GetModePoint()
     {
         switch (weaponMode)
@@ -25,19 +27,24 @@ public class WeaponStateController : MonoBehaviour
             case WeaponMode.Sheathe:
                 return sheathePoint;
             case WeaponMode.Armed:
-                return armedPoint;
-            case WeaponMode.Deflect:
-                return deflectPoint;
+                return playerController.weaponHolder;
             default:
                 return sheathePoint;
         }
+    }
+
+    public void ChangeWeaponMode(WeaponMode aMode)
+    {
+        weaponMode = aMode;
+        weaponRef.transform.SetParent(GetModePoint());
+        weaponRef.transform.localPosition = Vector3.zero;
+        weaponRef.transform.localEulerAngles = Vector2.zero;
     }
 
     public enum WeaponMode
     {
         Sheathe,
         Armed,
-        Deflect
     }
 
 }

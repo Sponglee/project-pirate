@@ -6,17 +6,24 @@ public class PlayerController : MonoBehaviour
 {
 
 
+    public Transform modelHolder;
+    public Transform weaponHolder;
+    public Animator playerAnimator;
     private PlayerMovement _playerMovement;
-
-
     private void Start()
     {
         _playerMovement = GetComponent<PlayerMovement>();
     }
 
-    private void Update()
+    public void JumpAnim(bool aToggle)
     {
-        // IsMoving
+
     }
+
+    public void RollAnim()
+    {
+
+    }
+
 
 }

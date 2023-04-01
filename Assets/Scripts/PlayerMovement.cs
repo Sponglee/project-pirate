@@ -3,13 +3,11 @@ using UnityEngine.AI;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public PlayerController playerController;
 
     public Transform movePivot;
     public Transform lookPivot;
-    public Transform modelHolder;
-    public Animator modelAnimator;
     public float recenterTreshold = 2f;
-
     public bool IsMoving = false;
     public bool IsJumping = false;
 
@@ -34,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
     {
         _worldCam = Camera.main;
         agent = GetComponent<NavMeshAgent>();
-        agent.updateRotation = false;
+        agent.updateRotation = true;
     }
 
     void Update()
@@ -46,47 +44,36 @@ public class PlayerMovement : MonoBehaviour
 
         IsMoving = move.magnitude >= 0.02f;
 
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && !IsJumping)
         {
-            modelAnimator.SetBool("IsJump", true);
+            playerController.JumpAnim(false);
             IsJumping = true;
         }
-        else if (Input.GetButtonUp("Jump"))
+        else if (Input.GetButtonUp("Jump") && IsJumping)
         {
-            modelAnimator.SetBool("IsJump", false);
+            playerController.JumpAnim(false);
             IsJumping = false;
         }
 
         if (Input.GetButtonDown("Roll"))
         {
-            modelAnimator.SetBool("IsRoll", true);
-        }
-        else if (Input.GetButtonUp("Roll"))
-        {
-            modelAnimator.SetBool("IsRoll", false);
-
+            playerController.RollAnim();
         }
 
     }
 
     private void FixedUpdate()
     {
-        if (MoveDir().magnitude <= 0.02f)
+        if (MoveDir().magnitude <= 0.05f)
         {
             agent.ResetPath();
-            modelHolder.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(LookDir(), Vector3.up), 0.5f);
         }
         else
         {
             // agent.SetDestination(transform.position + camMove * 2f);
             agent.Move(MoveDir() * agent.speed * Time.fixedDeltaTime);
-            modelHolder.rotation = Quaternion.Lerp(modelHolder.rotation, Quaternion.LookRotation(MoveDir(), Vector3.up), 0.5f);
+
         }
-
-        if (LookDir().magnitude != 0)
-            modelHolder.LookAt(lookPivot.position);
-
-
 
         if (LookEngaged)
         {
