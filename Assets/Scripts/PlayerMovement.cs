@@ -6,13 +6,14 @@ public class PlayerMovement : MonoBehaviour
     public PlayerController playerController;
 
     public Transform movePivot;
-    public Transform lookPivot;
     public float recenterTreshold = 2f;
     public bool IsMoving = false;
     public bool IsJumping = false;
 
     private Camera _worldCam;
-    private NavMeshAgent agent;
+    private CharacterController characterController;
+    public float movementSpeed = 15f;
+    public float rotationSpeed = 10f;
     private float horMove;
     private float verticalMove;
     private float timer = 0f;
@@ -31,8 +32,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         _worldCam = Camera.main;
-        agent = GetComponent<NavMeshAgent>();
-        agent.updateRotation = true;
+        characterController = GetComponent<CharacterController>();
     }
 
     void Update()
@@ -40,9 +40,10 @@ public class PlayerMovement : MonoBehaviour
         horMove = Input.GetAxis("Horizontal");
         verticalMove = Input.GetAxis("Vertical");
         var move = new Vector3(horMove, 0f, verticalMove);
-        movePivot.position = transform.position + Vector3.Scale(_worldCam.transform.rotation * move * 5f, new Vector3(1, 0, 1)).normalized;
+        movePivot.position = transform.position +
+        Vector3.Scale(_worldCam.transform.rotation * move * 5f, new Vector3(1, 0, 1)).normalized;
 
-        IsMoving = move.magnitude >= 0.02f;
+        IsMoving = move.magnitude >= characterController.minMoveDistance;
 
         if (Input.GetButtonDown("Jump") && !IsJumping)
         {
@@ -60,50 +61,31 @@ public class PlayerMovement : MonoBehaviour
             playerController.RollAnim();
         }
 
-    }
 
-    private void FixedUpdate()
+        HandleRotation();
+        HandleMovement();
+
+    }
+    private void HandleRotation()
     {
-        if (MoveDir().magnitude <= 0.05f)
-        {
-            agent.ResetPath();
-        }
-        else
-        {
-            // agent.SetDestination(transform.position + camMove * 2f);
-            agent.Move(MoveDir() * agent.speed * Time.fixedDeltaTime);
+        Vector3 positionLookAt = MoveDir();
+        positionLookAt.y = 0f;
 
-        }
-
-        if (LookEngaged)
-        {
-            timer += Time.deltaTime;
-            if (timer >= recenterTreshold)
-            {
-                LookEngaged = false;
-                timer = 0f;
-
-                if (MoveDir().magnitude >= 0.02f)
-                    lookPivot.position = Vector3.Lerp(lookPivot.position, movePivot.position, 0.5f);
-            }
-        }
-        else
-        {
-            if (MoveDir().magnitude >= 0.02f)
-                lookPivot.position = Vector3.Lerp(lookPivot.position, movePivot.position, 0.5f);
-        }
+        if (IsMoving)
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(positionLookAt), rotationSpeed * Time.deltaTime);
     }
 
+    private void HandleMovement()
+    {
+        characterController.SimpleMove(MoveDir() * movementSpeed);
+    }
 
     public Vector3 MoveDir()
     {
         return (movePivot.position - transform.position).normalized;
     }
 
-    public Vector3 LookDir()
-    {
-        return (lookPivot.position - transform.position).normalized;
-    }
+
 
     private void OnDrawGizmos()
     {
@@ -114,10 +96,6 @@ public class PlayerMovement : MonoBehaviour
             Gizmos.DrawSphere(movePivot.position, 0.5f);
         }
 
-        if (lookPivot != null)
-        {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawSphere(lookPivot.position, 1f);
-        }
+
     }
 }

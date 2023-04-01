@@ -7,7 +7,6 @@ using UnityEngine;
 public class PlayerAttack : MonoBehaviour
 {
     private Camera _worldCam;
-    private PlayerMovement playerMovement;
     private WeaponStateController weaponStateController;
     [Inject] public Game Game { get; set; }
     public bool IsFire1 = false;
@@ -15,7 +14,6 @@ public class PlayerAttack : MonoBehaviour
     {
         AntInject.InjectMono(this);
         _worldCam = Camera.main;
-        playerMovement = GetComponent<PlayerMovement>();
         weaponStateController = GetComponent<WeaponStateController>();
     }
 
@@ -35,8 +33,6 @@ public class PlayerAttack : MonoBehaviour
             Ray ray = _worldCam.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit, 100.0f, LayerMask.GetMask("Ground")))
             {
-                playerMovement.lookPivot.transform.position = transform.position + (hit.point - transform.position).normalized * 5f;
-                playerMovement.LookEngaged = true;
                 IsFire1 = true;
             }
         }
