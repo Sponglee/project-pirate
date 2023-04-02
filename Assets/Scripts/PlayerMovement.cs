@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
 
     public float movementSpeed = 15f;
     public float rotationSpeed = 10f;
+    public float jumpForce = 100f;
     public bool IsMoving = false;
     public bool IsJumping = false;
     public bool IsRolling = false;
@@ -17,7 +18,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float horMove = 0f;
     [SerializeField] private float verticalMove = 0f;
     private Vector3 move;
-    private float jumpVelocity = 0f;
+    [SerializeField] private float jumpVelocity = 0f;
 
     void Start()
     {
@@ -35,7 +36,7 @@ public class PlayerMovement : MonoBehaviour
         IsMoving = Vector3.Scale(move, new Vector3(1, 0, 1)).magnitude > 0f;
         IsGrounded = characterController.isGrounded;
 
-        if (Input.GetButton("Jump") && characterController.isGrounded)
+        if (Input.GetButtonDown("Jump") && characterController.isGrounded)
         {
             IsJumping = true;
         }
@@ -69,9 +70,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleMovement()
     {
-        jumpVelocity = characterController.isGrounded ? -0.05f : -1f;
+        jumpVelocity = characterController.isGrounded ? -0.05f : -9.8f;
+        if (IsJumping) jumpVelocity = characterController.isGrounded ? jumpForce : -9.8f;
 
-        if (IsJumping && characterController.isGrounded) jumpVelocity = 10f;
         characterController.Move(move * movementSpeed * Time.deltaTime);
     }
 
