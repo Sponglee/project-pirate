@@ -18,15 +18,13 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    public void JumpAnim(bool aToggle)
+    private void Update()
     {
-
+        playerAnimation.MoveAnim(playerMovement.IsMoving);
+        playerAnimation.AttackAnim(playerAttack.IsFire1);
+        playerAnimation.JumpAnim(playerMovement.IsJumping);
     }
 
-    public void RollAnim()
-    {
-
-    }
 
 
 }

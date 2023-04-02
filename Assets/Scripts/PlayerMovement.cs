@@ -3,31 +3,21 @@ using UnityEngine.AI;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public PlayerController playerController;
 
-    public Transform movePivot;
-    public float recenterTreshold = 2f;
-    public bool IsMoving = false;
-    public bool IsJumping = false;
 
-    private Camera _worldCam;
-    private CharacterController characterController;
     public float movementSpeed = 15f;
     public float rotationSpeed = 10f;
-    private float horMove;
-    private float verticalMove;
-    private float timer = 0f;
-    private bool lookEngaged = false;
-    public bool LookEngaged
-    {
-        get => lookEngaged; set
-        {
-            lookEngaged = value;
-
-            if (value)
-                timer = 0f;
-        }
-    }
+    public bool IsMoving = false;
+    public bool IsJumping = false;
+    public bool IsRolling = false;
+    public bool IsGrounded = false;
+    private PlayerController playerController;
+    private Camera _worldCam;
+    private CharacterController characterController;
+    [SerializeField] private float horMove = 0f;
+    [SerializeField] private float verticalMove = 0f;
+    private Vector3 move;
+    private float jumpVelocity = 0f;
 
     void Start()
     {
@@ -37,38 +27,40 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        horMove = Input.GetAxis("Horizontal");
-        verticalMove = Input.GetAxis("Vertical");
-        var move = new Vector3(horMove, 0f, verticalMove);
-        movePivot.position = transform.position +
-        Vector3.Scale(_worldCam.transform.rotation * move * 5f, new Vector3(1, 0, 1)).normalized;
+        horMove = Input.GetAxisRaw("Horizontal");
+        verticalMove = Input.GetAxisRaw("Vertical");
 
-        IsMoving = move.magnitude >= characterController.minMoveDistance;
+        move = new Vector3(horMove, jumpVelocity, verticalMove);
 
-        if (Input.GetButtonDown("Jump") && !IsJumping)
+        IsMoving = Vector3.Scale(move, new Vector3(1, 0, 1)).magnitude > 0f;
+        IsGrounded = characterController.isGrounded;
+
+        if (Input.GetButton("Jump") && characterController.isGrounded)
         {
-            playerController.JumpAnim(false);
             IsJumping = true;
         }
-        else if (Input.GetButtonUp("Jump") && IsJumping)
+        else if (characterController.isGrounded && IsJumping)
         {
-            playerController.JumpAnim(false);
             IsJumping = false;
         }
 
         if (Input.GetButtonDown("Roll"))
         {
-            playerController.RollAnim();
+            IsRolling = true;
+        }
+        else if (Input.GetButtonUp("Roll"))
+        {
+            IsRolling = false;
         }
 
 
         HandleRotation();
         HandleMovement();
-
+        HandlePhysics();
     }
     private void HandleRotation()
     {
-        Vector3 positionLookAt = MoveDir();
+        Vector3 positionLookAt = move;
         positionLookAt.y = 0f;
 
         if (IsMoving)
@@ -77,24 +69,20 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleMovement()
     {
-        characterController.SimpleMove(MoveDir() * movementSpeed);
+        jumpVelocity = characterController.isGrounded ? -0.05f : -1f;
+
+        if (IsJumping && characterController.isGrounded) jumpVelocity = 10f;
+        characterController.Move(move * movementSpeed * Time.deltaTime);
     }
 
-    public Vector3 MoveDir()
+    private void HandlePhysics()
     {
-        return (movePivot.position - transform.position).normalized;
-    }
 
+    }
 
 
     private void OnDrawGizmos()
     {
-
-        if (movePivot != null)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawSphere(movePivot.position, 0.5f);
-        }
 
 
     }
