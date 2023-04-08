@@ -12,10 +12,10 @@ public class PlayerController : MonoBehaviour
     public PlayerAnimation playerAnimation;
     public WeaponStateController weaponStateController;
     public PlayerAttack playerAttack;
-
+    public WeaponAnimationTriggers animationTriggers;
     private void Start()
     {
-
+        animationTriggers.weaponRef = weaponStateController.weaponRef;
     }
 
     private void Update()

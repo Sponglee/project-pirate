@@ -12,6 +12,7 @@ public class TransformFollower : MonoBehaviour
     private float timer = 0f;
     Vector3 testedPos;
 
+
     void FixedUpdate()
     {
 

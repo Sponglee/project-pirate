@@ -10,6 +10,9 @@ public class PlayerAttack : MonoBehaviour
     private WeaponStateController weaponStateController;
     [Inject] public Game Game { get; set; }
     public bool IsFire1 = false;
+    public bool IsArmed = false;
+    public bool IsAttackInProgress = false;
+
     private void Start()
     {
         AntInject.InjectMono(this);
@@ -23,11 +26,11 @@ public class PlayerAttack : MonoBehaviour
 
         if (Input.GetButtonDown("Fire3"))
         {
-            weaponStateController.ToggleWeaponMode();
+            IsArmed = weaponStateController.ToggleWeaponMode();
             return;
         }
 
-        if (Input.GetButton("Fire1"))
+        if (Input.GetButton("Fire1") && IsArmed)
         {
             RaycastHit hit;
             Ray ray = _worldCam.ScreenPointToRay(Input.mousePosition);
@@ -41,7 +44,20 @@ public class PlayerAttack : MonoBehaviour
             IsFire1 = false;
         }
 
+        IsAttackInProgress = weaponStateController.weaponRef.IsAttackInProgress;
+
+        HandleAttack();
+    }
+
+    public void HandleAttack()
+    {
+        if (IsFire1)
+            weaponStateController.weaponRef.Attack();
+    }
 
 
+    public void AttackFinish()
+    {
+        IsAttackInProgress = false;
     }
 }

@@ -16,9 +16,10 @@ public class WeaponStateController : MonoBehaviour
     }
 
 
-    public void ToggleWeaponMode()
+    public bool ToggleWeaponMode()
     {
         ChangeWeaponMode(weaponMode == WeaponMode.Sheathe ? WeaponMode.Armed : WeaponMode.Sheathe);
+        return weaponMode == WeaponMode.Armed;
     }
     public Transform GetModePoint()
     {
@@ -36,9 +37,9 @@ public class WeaponStateController : MonoBehaviour
     public void ChangeWeaponMode(WeaponMode aMode)
     {
         weaponMode = aMode;
-        weaponRef.transform.SetParent(GetModePoint());
-        weaponRef.transform.localPosition = Vector3.zero;
-        weaponRef.transform.localEulerAngles = Vector2.zero;
+        weaponRef.weaponModel.transform.SetParent(GetModePoint());
+        weaponRef.weaponModel.transform.localPosition = Vector3.zero;
+        weaponRef.weaponModel.transform.localEulerAngles = Vector2.zero;
     }
 
     public enum WeaponMode

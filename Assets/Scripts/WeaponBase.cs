@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class WeaponBase : MonoBehaviour
 {
+    public Transform weaponModel;
 
     public delegate void AttackDelegate(IAttackable aAttackable);
     private AttackDelegate callBackDelegate;
@@ -15,34 +16,54 @@ public class WeaponBase : MonoBehaviour
 
     public LayerMask layerMask;
 
-    private Collider _collider;
+    public ScriptableAttackBase[] attackSequence;
+
+    public int currentAttackIndex = 0;
+
+    public bool IsAttackInProgress = false;
 
     private void Start()
     {
-        _collider = GetComponent<Collider>();
         ActivateWeapon(false);
     }
 
-    private void OnTriggerStay(Collider other)
-    {
-        Attack(other);
-    }
 
-    public void Attack(Collider other)
-    {
-        IAttackable tmpTarget = other.GetComponent<IAttackable>();
 
-        if (tmpTarget != null)
-        {
-            var collisionPoint = other.ClosestPoint(transform.position);
-            tmpTarget.TakeDamage(Random.Range(12, 13), transform, collisionPoint);
-        }
+    public void Attack()
+    {
+        if (IsAttackInProgress) return;
+        IsAttackInProgress = true;
+        currentAttackIndex = (currentAttackIndex + 1) % attackSequence.Length;
+        // IAttackable[] tmpTargets = Physics.OverlapSphereNonAlloc()
+
+        // if (tmpTarget != null)
+        // {
+        //     var collisionPoint = other.ClosestPoint(transform.position);
+        //     tmpTarget.TakeDamage(Random.Range(12, 13), transform, collisionPoint);
+        // }
     }
 
 
     public void ActivateWeapon(bool aToggle)
     {
-        _collider.enabled = aToggle;
+        // _collider.enabled = aToggle;
         trail.Emit = aToggle;
+        IsAttackInProgress = aToggle;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (Application.isPlaying)
+        {
+            attackSequence[currentAttackIndex].OnGizmos(transform);
+        }
+        else
+        {
+            for (int i = 0; i < attackSequence.Length; i++)
+            {
+                attackSequence[i].OnGizmos(transform);
+            }
+
+        }
     }
 }
