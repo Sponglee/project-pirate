@@ -29,11 +29,13 @@ public class WeaponBase : MonoBehaviour
 
 
 
-    public void Attack()
+    public ScriptableAttackBase Attack()
     {
-        if (IsAttackInProgress) return;
+        if (IsAttackInProgress) return null;
         IsAttackInProgress = true;
         currentAttackIndex = (currentAttackIndex + 1) % attackSequence.Length;
+
+        return attackSequence[currentAttackIndex];
         // IAttackable[] tmpTargets = Physics.OverlapSphereNonAlloc()
 
         // if (tmpTarget != null)

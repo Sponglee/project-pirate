@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d06f51066772050458efc5a6332303ee, type: 3}
   m_Name: BoxAttack
   m_EditorClassIdentifier: 
+  animatorOverrideController: {fileID: 22100000, guid: a0a079a62720cb34891653563f5e8659, type: 2}
   attackDimentions: {x: 5, y: 5, z: 10}
   offset: {x: 0, y: 0, z: 5}

@@ -13,11 +13,16 @@ public class PlayerAttack : MonoBehaviour
     public bool IsArmed = false;
     public bool IsAttackInProgress = false;
 
+    private PlayerController playerController;
+
+
     private void Start()
     {
         AntInject.InjectMono(this);
         _worldCam = Camera.main;
         weaponStateController = GetComponent<WeaponStateController>();
+
+        playerController = GetComponent<PlayerController>();
     }
 
     private void Update()
@@ -52,7 +57,11 @@ public class PlayerAttack : MonoBehaviour
     public void HandleAttack()
     {
         if (IsFire1)
-            weaponStateController.weaponRef.Attack();
+        {
+            ScriptableAttackBase tmpAttack = weaponStateController.weaponRef.Attack();
+            if (tmpAttack == null) return;
+            playerController.playerAnimation.playerAnim.runtimeAnimatorController = tmpAttack.animatorOverrideController;
+        }
     }
 
 

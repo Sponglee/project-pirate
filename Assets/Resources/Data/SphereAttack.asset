@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a942a1033763c974195f40584a5fc7fd, type: 3}
   m_Name: SphereAttack
   m_EditorClassIdentifier: 
+  animatorOverrideController: {fileID: 22100000, guid: 7e813d29282f02145bdd2bf98cc0a287, type: 2}
   attackRadius: 4
   offset: {x: 0, y: 0, z: 3}
