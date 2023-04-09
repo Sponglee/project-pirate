@@ -36,7 +36,7 @@ public class TargetDummy : MonoBehaviour, IAttackable
         dummyMat = dummyRenderer.material;
         startColor = dummyMat.color;
         _entity = GetComponent<AntEntity>();
-
+        agent.speed = movementSpeed;
         AntEngine.AddEntity(_entity);
     }
 

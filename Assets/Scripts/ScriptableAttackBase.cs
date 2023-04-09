@@ -5,12 +5,13 @@ public class ScriptableAttackBase : ScriptableObject
 {
     public AnimatorOverrideController animatorOverrideController;
 
-    public virtual void Attack()
+    public virtual void Attack(WeaponBase aWeapon)
     {
+
 
     }
 
-    public virtual void OnGizmos(Transform aTransform)
+    public virtual void DrawGizmo(Transform aTransform)
     {
 
     }

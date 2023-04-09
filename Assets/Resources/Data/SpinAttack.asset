@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: SpinAttack
   m_EditorClassIdentifier: 
   animatorOverrideController: {fileID: 22100000, guid: dd4e69dfe3e86f5479731863545c5e2c, type: 2}
-  attackRadius: 5
+  attackRadius: 7
   offset: {x: 0, y: 0, z: 0}

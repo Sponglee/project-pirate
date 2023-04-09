@@ -27,7 +27,11 @@ public class WeaponBase : MonoBehaviour
     public bool IsOnCoolDown = false;
 
     [SerializeField] private float timer = 0f;
-    [SerializeField] private float attackSpeed = 1f;
+    [Header("STATS")]
+    public float attackSpeed = 1f;
+    public float attackDamage = 10f;
+    public float critRate = 0.5f;
+    public float critDamage = 1f;
 
     private void Start()
     {
@@ -49,6 +53,13 @@ public class WeaponBase : MonoBehaviour
         }
     }
 
+    public float GetDamageNumber()
+    {
+        float tmpDamge = Mathf.RoundToInt(UnityEngine.Random.Range(0.8f, 1.2f) * attackDamage);
+        return tmpDamge;
+    }
+
+
     public ScriptableAttackBase GetCurrentAttack()
     {
         if (IsAttackInProgress) return null;
@@ -59,31 +70,19 @@ public class WeaponBase : MonoBehaviour
     {
         if (IsOnCoolDown)
         {
-            Debug.Log("COOLDOWN " + attackSequence[currentAttackIndex].name);
-
             return;
         }
 
         if (IsAttackInProgress)
         {
-            Debug.Log("ATTACK IN PROGRESS" + attackSequence[currentAttackIndex].name);
             return;
         }
 
         ActivateWeapon(true);
         currentAttackIndex = (currentAttackIndex + 1) % attackSequence.Length;
         playerController.playerAnimation.playerAnim.runtimeAnimatorController = attackSequence[currentAttackIndex].animatorOverrideController;
-        Debug.Log(">>" + attackSequence[currentAttackIndex]);
         playerController.playerAnimation.AttackAnim(true);
-
-
-        // IAttackable[] tmpTargets = Physics.OverlapSphereNonAlloc()
-
-        // if (tmpTarget != null)
-        // {
-        //     var collisionPoint = other.ClosestPoint(transform.position);
-        //     tmpTarget.TakeDamage(Random.Range(12, 13), transform, collisionPoint);
-        // }
+        attackSequence[currentAttackIndex].Attack(this);
     }
 
 
@@ -112,13 +111,13 @@ public class WeaponBase : MonoBehaviour
     {
         if (Application.isPlaying)
         {
-            attackSequence[currentAttackIndex].OnGizmos(transform);
+            attackSequence[(currentAttackIndex + 1) % attackSequence.Length].DrawGizmo(transform);
         }
         else
         {
             for (int i = 0; i < attackSequence.Length; i++)
             {
-                attackSequence[i].OnGizmos(transform);
+                attackSequence[i].DrawGizmo(transform);
             }
 
         }
