@@ -21,7 +21,6 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         playerAnimation.MoveAnim(playerMovement.IsMoving);
-        playerAnimation.AttackAnim(playerAttack.IsFire1);
         playerAnimation.JumpAnim(playerMovement.IsJumping);
     }
 

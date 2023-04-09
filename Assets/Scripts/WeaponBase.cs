@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Anthill.Core;
@@ -7,7 +8,7 @@ public class WeaponBase : MonoBehaviour
 {
     public Transform weaponModel;
 
-    public delegate void AttackDelegate(IAttackable aAttackable);
+    public delegate void AttackDelegate();
     private AttackDelegate callBackDelegate;
 
     public MeleeWeaponTrail trail;
@@ -21,21 +22,61 @@ public class WeaponBase : MonoBehaviour
     public int currentAttackIndex = 0;
 
     public bool IsAttackInProgress = false;
+    private PlayerController playerController;
+
+    public bool IsOnCoolDown = false;
+
+    [SerializeField] private float timer = 0f;
+    [SerializeField] private float attackSpeed = 1f;
 
     private void Start()
     {
+        playerController = GetComponentInParent<PlayerController>();
+        callBackDelegate = AnimationFinishedHandler;
         ActivateWeapon(false);
     }
 
+    private void Update()
+    {
+        if (IsOnCoolDown)
+        {
+            timer += Time.deltaTime;
+            if (timer > attackSpeed)
+            {
+                timer = 0f;
+                IsOnCoolDown = false;
+            }
+        }
+    }
 
-
-    public ScriptableAttackBase Attack()
+    public ScriptableAttackBase GetCurrentAttack()
     {
         if (IsAttackInProgress) return null;
-        IsAttackInProgress = true;
-        currentAttackIndex = (currentAttackIndex + 1) % attackSequence.Length;
-
         return attackSequence[currentAttackIndex];
+    }
+
+    public void ExecuteAttack()
+    {
+        if (IsOnCoolDown)
+        {
+            Debug.Log("COOLDOWN " + attackSequence[currentAttackIndex].name);
+
+            return;
+        }
+
+        if (IsAttackInProgress)
+        {
+            Debug.Log("ATTACK IN PROGRESS" + attackSequence[currentAttackIndex].name);
+            return;
+        }
+
+        ActivateWeapon(true);
+        currentAttackIndex = (currentAttackIndex + 1) % attackSequence.Length;
+        playerController.playerAnimation.playerAnim.runtimeAnimatorController = attackSequence[currentAttackIndex].animatorOverrideController;
+        Debug.Log(">>" + attackSequence[currentAttackIndex]);
+        playerController.playerAnimation.AttackAnim(true);
+
+
         // IAttackable[] tmpTargets = Physics.OverlapSphereNonAlloc()
 
         // if (tmpTarget != null)
@@ -48,9 +89,23 @@ public class WeaponBase : MonoBehaviour
 
     public void ActivateWeapon(bool aToggle)
     {
-        // _collider.enabled = aToggle;
         trail.Emit = aToggle;
         IsAttackInProgress = aToggle;
+
+        if (aToggle)
+        {
+            IsOnCoolDown = true;
+            timer = 0f;
+        }
+        else if (aToggle == false && callBackDelegate != null)
+        {
+            callBackDelegate();
+        }
+    }
+
+    private void AnimationFinishedHandler()
+    {
+        playerController.playerAnimation.AttackAnim(false);
     }
 
     private void OnDrawGizmos()

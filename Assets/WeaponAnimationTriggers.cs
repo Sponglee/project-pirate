@@ -6,6 +6,11 @@ public class WeaponAnimationTriggers : MonoBehaviour
 {
     public WeaponBase weaponRef;
 
+    private void Start()
+    {
+
+    }
+
     public void OnWeaponAnimationEnter()
     {
         weaponRef.ActivateWeapon(true);

@@ -11,7 +11,6 @@ public class PlayerAttack : MonoBehaviour
     [Inject] public Game Game { get; set; }
     public bool IsFire1 = false;
     public bool IsArmed = false;
-    public bool IsAttackInProgress = false;
 
     private PlayerController playerController;
 
@@ -49,7 +48,6 @@ public class PlayerAttack : MonoBehaviour
             IsFire1 = false;
         }
 
-        IsAttackInProgress = weaponStateController.weaponRef.IsAttackInProgress;
 
         HandleAttack();
     }
@@ -58,15 +56,8 @@ public class PlayerAttack : MonoBehaviour
     {
         if (IsFire1)
         {
-            ScriptableAttackBase tmpAttack = weaponStateController.weaponRef.Attack();
-            if (tmpAttack == null) return;
-            playerController.playerAnimation.playerAnim.runtimeAnimatorController = tmpAttack.animatorOverrideController;
+            weaponStateController.weaponRef.ExecuteAttack();
         }
     }
 
-
-    public void AttackFinish()
-    {
-        IsAttackInProgress = false;
-    }
 }

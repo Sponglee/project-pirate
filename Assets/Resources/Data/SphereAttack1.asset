@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animatorOverrideController: {fileID: 22100000, guid: b93ac4232c03b8447b3c40082ab4b51d, type: 2}
   attackRadius: 5
-  offset: {x: 0, y: 0, z: 0}
+  offset: {x: 0, y: 0, z: 5}
