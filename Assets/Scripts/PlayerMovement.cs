@@ -3,7 +3,6 @@ using UnityEngine.AI;
 
 public class PlayerMovement : MonoBehaviour
 {
-
     public Transform movePivot;
     public Transform lookPivot;
     public Transform modelHolder;
@@ -19,6 +18,10 @@ public class PlayerMovement : MonoBehaviour
     private float verticalMove;
     private float timer = 0f;
     private bool lookEngaged = false;
+    
+    private static readonly int IsJump = Animator.StringToHash("IsJump");
+    private static readonly int IsRoll = Animator.StringToHash("IsRoll");
+
     public bool LookEngaged
     {
         get => lookEngaged; set
@@ -48,23 +51,22 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetButtonDown("Jump"))
         {
-            modelAnimator.SetBool("IsJump", true);
+            modelAnimator.SetBool(IsJump, true);
             IsJumping = true;
         }
         else if (Input.GetButtonUp("Jump"))
         {
-            modelAnimator.SetBool("IsJump", false);
+            modelAnimator.SetBool(IsJump, false);
             IsJumping = false;
         }
 
         if (Input.GetButtonDown("Roll"))
         {
-            modelAnimator.SetBool("IsRoll", true);
+            modelAnimator.SetBool(IsRoll, true);
         }
         else if (Input.GetButtonUp("Roll"))
         {
-            modelAnimator.SetBool("IsRoll", false);
-
+            modelAnimator.SetBool(IsRoll, false);
         }
 
     }
@@ -78,16 +80,13 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            // agent.SetDestination(transform.position + camMove * 2f);
-            agent.Move(MoveDir() * agent.speed * Time.fixedDeltaTime);
+            agent.Move(MoveDir() * (agent.speed * Time.fixedDeltaTime));
             modelHolder.rotation = Quaternion.Lerp(modelHolder.rotation, Quaternion.LookRotation(MoveDir(), Vector3.up), 0.5f);
         }
 
         if (LookDir().magnitude != 0)
             modelHolder.LookAt(lookPivot.position);
-
-
-
+        
         if (LookEngaged)
         {
             timer += Time.deltaTime;
@@ -106,8 +105,7 @@ public class PlayerMovement : MonoBehaviour
                 lookPivot.position = Vector3.Lerp(lookPivot.position, movePivot.position, 0.5f);
         }
     }
-
-
+    
     public Vector3 MoveDir()
     {
         return (movePivot.position - transform.position).normalized;
@@ -120,7 +118,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-
         if (movePivot != null)
         {
             Gizmos.color = Color.red;
